@@ -1,3 +1,12 @@
-* {
-  background-color: darkorchid;
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
 }
+#sidebar {
+  width: 40%;
+}
+
+
+
+
