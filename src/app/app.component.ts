@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {WebSocketService} from "./shared/service/web-socket.service";
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Polchatex';
+
+  constructor(private webSocketService: WebSocketService) {}
 }
