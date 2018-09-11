@@ -4,13 +4,15 @@ import { AppComponent } from './app.component';
 import { ChatlistComponent } from './chatlist/chatlist.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ChatComponent } from './chat/chat.component';
+import { InputComponent } from './input/input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ChatlistComponent,
     NavbarComponent,
-    ChatComponent
+    ChatComponent,
+    InputComponent
   ],
   imports: [
     BrowserModule,
