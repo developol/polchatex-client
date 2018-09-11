@@ -12,39 +12,32 @@ export class WebSocketService {
   }
 
   initializeWebSocketConnection(){
-    var wsUrl = 'http://localhost:8080';
-    var socket = new SockJS(wsUrl + '/secured/room');
+    var wsUrl = "http://localhost:8080";
+    var socket = new SockJS(wsUrl + '/socket');
     var stompClient = Stomp.over(socket);
-    var sessionId = "";
-
-    let url;
+    stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-      url = stompClient.ws._transport.url;
-      url = url.replace(
-        "ws://localhost:8080/secured/room/",  "");
-      url = url.replace("/websocket", "");
-      url = url.replace(/^[0-9]+\//, "");
+      var sessionId;
+      var url = stompClient.ws._transport.url;
+      sessionId = url.replace(
+        "ws://localhost:8080/socket/",  "");
+      sessionId = sessionId.replace("/websocket", "");
+      sessionId = sessionId.replace(/^[0-9]+\//, "");
+
+      console.log('Connected: ' + frame);
       console.log("Your current session is: " + url);
-      sessionId = url;
+
+      var message = {
+        'content' : "hello",
+        'isRead' : false,
+      };
+
+      stompClient.subscribe('/user/queue/specific-user' + '-user' + sessionId, function (msgOut) {});
+      stompClient.send("/app/send-message", {}, JSON.stringify(message));
     });
 
-    setTimeout(() => {
-      stompClient.subscribe(wsUrl + '/secured/user/queue/specific-user'
-        + '-user' + sessionId, function (msgOut) {
-        //handle messages
-      alert(msgOut);
-    })}, 1000);
 
-    var message = {
-      content: "eloooooooooooo"
-    };
-    setTimeout(() => {
-      stompClient.send("http://localhost:8080/app/send/message", header, message);
-    }, 1000);
 
-    var header = {
-      sessionId: sessionId
-    };
 
   }
 }
