@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {WebSocketService} from "../shared/service/web-socket.service";
 
 @Component({
   selector: 'app-input',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./input.component.css']
 })
 export class InputComponent implements OnInit {
+  message: string;
 
-  constructor() { }
+  constructor(private webSocketService: WebSocketService) { }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  onSendButtonClicked() {
+    this.webSocketService.sendMessage(this.message);
   }
 
 }

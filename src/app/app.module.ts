@@ -5,6 +5,7 @@ import { ChatlistComponent } from './chatlist/chatlist.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ChatComponent } from './chat/chat.component';
 import { InputComponent } from './input/input.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { InputComponent } from './input/input.component';
   ],
   imports: [
     BrowserModule,
-
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
