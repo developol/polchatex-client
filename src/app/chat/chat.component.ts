@@ -13,14 +13,12 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     this.initializeMessageStream();
-    setInterval(() => console.log(this.messages), 1000);
   }
 
   initializeMessageStream() {
     let receivedMessageObservable = this.messageService.getReceivedMessageAsObservable();
     let receivedMessageObserver = {
       next: (message) => {
-        console.log(message);
         if (message && message.body) {
           let messageItem = {
             'content': JSON.parse(message.body).content,
