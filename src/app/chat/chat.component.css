@@ -1,0 +1,45 @@
+h5 {
+  text-align: center;
+  background-color: #f8f9fa;
+  margin-bottom: 0;
+}
+#top-hr {
+  max-height: 1px;
+}
+div {
+  background: #f8f9fa;
+}
+.card {
+  background-color: #ffedda;
+  border-color: #ffedda;
+  max-height: 50px;
+}
+.card-body {
+  background-color: #ffedda;
+  text-align: right;
+  font-size: 1.6vh;
+}
+
+.pre-scrollable {
+  max-height: 82vh;
+}
+
+.sent-message {
+  margin-top: 2vh;
+  margin-left: 80vh;
+  margin-right: 10vh;
+}
+
+.received-message {
+  margin-bottom: 2vh;
+  margin-left: 10vh;
+  margin-right: 90vh;
+}
+
+.message-body {
+  background-color: #ffedda;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 0.2em;
+  padding-top: 0.1em;
+}
