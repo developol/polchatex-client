@@ -1,0 +1,30 @@
+.navbar {
+  height: 7vh;
+  background-color: #f8f9fa;
+}
+b {
+  background-color: #f8f9fa;
+}
+.navbar-nav{
+  background-color: #f8f9fa !important;
+}
+.mr-auto {
+  background-color: #f8f9fa !important;
+  width: 100%;
+}
+a {
+  background-color: #f8f9fa;
+}
+ul {
+  background-color: #f8f9fa !important;
+}
+h5 {
+  background-color: #f8f9fa;
+  visibility: hidden;
+}
+span {
+  background-color: #f8f9fa;
+  font-size: 1px;
+  color:#f8f9fa;
+}
+
