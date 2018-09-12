@@ -1,0 +1,9 @@
+<nav id="sidebar">
+  <div class="list-group pre-scrollable">
+    <div *ngFor="let mesage of messages" (click)="test()" class="list-group-item list-group-item-action flex-column align-items-start">
+        <h5 >{{mesage.name}}</h5>
+        <small class="text-muted">{{dateSent}}</small>
+      <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+    </div>
+  </div>
+</nav>
