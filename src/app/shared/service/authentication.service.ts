@@ -16,14 +16,6 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.tokenCookie = new Subject<boolean>();
-    this._credentials = {
-      "username": 'dupa',
-      "password": 'dupa'
-    }
-    this.b64Header = new HttpHeaders({
-      authorization : 'Basic ' + btoa(this._credentials.username + ':' + this._credentials.password)
-    });
-    this.setCookie();
   }
 
 
@@ -32,6 +24,9 @@ export class AuthenticationService {
   }
 
   setCookie(): void {
+    this.b64Header = new HttpHeaders({
+      authorization : 'Basic ' + btoa(this._credentials.username + ':' + this._credentials.password)
+    });
     this.basicAuthentication().subscribe((token: string) => {
       this.jwtToken = token;
       console.log(this.jwtToken);
@@ -57,7 +52,7 @@ export class AuthenticationService {
     return this._credentials;
   }
 
-  set credentials(value: any) {
+  set_credentials(value: any) {
     this._credentials = value;
   }
 
