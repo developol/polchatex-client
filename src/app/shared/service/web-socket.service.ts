@@ -17,24 +17,33 @@ export class WebSocketService {
   }
 
   private tokenCookieObservable: Observable<boolean>;
+  webSocketinitialized: boolean = false;
 
   stompClient: any;
   receivedMessageSubject: Subject<any> = new Subject<any>();
+
   confirmAuthentication(): void {
-    this.tokenCookieObservable.subscribe({
-      next: cookie => {
-      if (cookie) {
-        this.initializeWebSocketConnection();
-      }
+    if (this.authenticationService.checkIfCookieExists()) {
+      this.initializeWebSocketConnection();
+    } else {
+      this.tokenCookieObservable.subscribe({
+        next: cookie => {
+          if (cookie) {
+            this.initializeWebSocketConnection();
+          }
         }
-    });
+      });
+    }
   }
 
   initializeWebSocketConnection(): void {
+    if (this.webSocketinitialized) {
+      return;
+    }
     let socket = new SockJS(environment.url + environment.webSocketEndpoint);
     this.stompClient = Stomp.over(socket);
     let that = this;
-    this.stompClient.connect({}, function (frame) {
+    that.stompClient.connect({}, function (frame) {
       let url = that.stompClient.ws._transport.url;
       let sessionId = WebSocketService.getSessionId(url);
 
@@ -43,7 +52,6 @@ export class WebSocketService {
 
       that.stompClient.subscribe(environment.subscriptionEndpoint + '-user' + sessionId,
           message => that.onMessageReceived(message));
-      that.sendMessage("hello");
     });
   }
 
@@ -53,9 +61,7 @@ export class WebSocketService {
   }
 
   onMessageReceived(message): void {
-    if (JSON.parse(message.body).content != 'hello') {
-      this.receivedMessageSubject.next(message);
-    }
+    this.receivedMessageSubject.next(message);
   }
 
   getReceivedMessageAsObservable(): Observable<any> {

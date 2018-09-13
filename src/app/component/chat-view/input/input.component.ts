@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MessageService} from "../shared/service/message.service";
+import {MessageService} from "../../../shared/service/message.service";
 
 @Component({
   selector: 'app-input',
