@@ -3,18 +3,32 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {environment} from "../../../environments/environment";
 import {Observable, Subject} from "rxjs";
-
+import {AuthenticationService} from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class WebSocketService {
-  constructor() {
-    this.initializeWebSocketConnection();
+  constructor(private authenticationService: AuthenticationService) {
+    this.tokenCookieObservable = this.authenticationService.getTokenCookieObservable();
+    this.confirmAuthentication();
   }
+
+  private tokenCookieObservable: Observable<boolean>;
 
   stompClient: any;
   receivedMessageSubject: Subject<any> = new Subject<any>();
+  confirmAuthentication(): void {
+    this.tokenCookieObservable.subscribe({
+      next: cookie => {
+      if (cookie) {
+        this.initializeWebSocketConnection();
+      }
+        }
+    });
+  }
 
   initializeWebSocketConnection(): void {
     let socket = new SockJS(environment.url + environment.webSocketEndpoint);

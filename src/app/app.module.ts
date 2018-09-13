@@ -6,6 +6,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ChatComponent } from './chat/chat.component';
 import { InputComponent } from './input/input.component';
 import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from '@angular/common/http';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -17,9 +19,12 @@ import {FormsModule} from "@angular/forms";
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
