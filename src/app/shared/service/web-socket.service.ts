@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
+import {environment} from "../../../environments/environment";
+import {Observable, Subject} from "rxjs";
 
 
 @Injectable({
@@ -11,33 +13,52 @@ export class WebSocketService {
     this.initializeWebSocketConnection();
   }
 
-  initializeWebSocketConnection(){
-    var wsUrl = "http://localhost:8080";
-    var socket = new SockJS(wsUrl + '/socket');
-    var stompClient = Stomp.over(socket);
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-      var sessionId;
-      var url = stompClient.ws._transport.url;
-      sessionId = url.replace(
-        "ws://localhost:8080/socket/",  "");
-      sessionId = sessionId.replace("/websocket", "");
-      sessionId = sessionId.replace(/^[0-9]+\//, "");
+  stompClient: any;
+  receivedMessageSubject: Subject<any> = new Subject<any>();
+
+  initializeWebSocketConnection(): void {
+    let socket = new SockJS(environment.url + environment.webSocketEndpoint);
+    this.stompClient = Stomp.over(socket);
+    let that = this;
+    this.stompClient.connect({}, function (frame) {
+      let url = that.stompClient.ws._transport.url;
+      let sessionId = WebSocketService.getSessionId(url);
 
       console.log('Connected: ' + frame);
-      console.log("Your current session is: " + url);
+      console.log("Your current session is: " + sessionId);
 
-      var message = {
-        'content' : "hello",
-        'isRead' : false,
-      };
-
-      stompClient.subscribe('/user/queue/specific-user' + '-user' + sessionId, function (msgOut) {});
-      stompClient.send("/app/send-message", {}, JSON.stringify(message));
+      that.stompClient.subscribe(environment.subscriptionEndpoint + '-user' + sessionId,
+          message => that.onMessageReceived(message));
+      that.sendMessage("hello");
     });
+  }
 
+  sendMessage(content: string): void {
+    this.stompClient.send(environment.sendMessageEndpoint, {},
+      JSON.stringify(WebSocketService.buildMessageObject(content)));
+  }
 
+  onMessageReceived(message): void {
+    if (JSON.parse(message.body).content != 'hello') {
+      this.receivedMessageSubject.next(message);
+    }
+  }
 
+  getReceivedMessageAsObservable(): Observable<any> {
+    return this.receivedMessageSubject.asObservable();
+  }
 
+  static getSessionId(url: string): string {
+    let sessionId = url.replace(environment.wsUrl + environment.webSocketEndpoint + '/',  "");
+    sessionId = sessionId.replace("/websocket", "");
+    sessionId = sessionId.replace(/^[0-9]+\//, "");
+    return sessionId;
+  }
+
+  static buildMessageObject(content: string) : any {
+    return {
+      'content' : content,
+      'isRead' : false,
+    };
   }
 }

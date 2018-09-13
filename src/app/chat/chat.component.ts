@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MessageService} from "../shared/service/message.service";
 
 @Component({
   selector: 'app-chat',
@@ -6,79 +7,39 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  messages: any[] = [{
-  "content": "This is some text within a card body.",
-    "class": "sent-message"
-},
-{
-  "content": "This is some text within a card body.",
-  "class": "sent-message"
-},
-{
-  "content": "This is some text within a card body.",
-  "class": "received-message"
-},
-{
-  "content": "This is some text within a card body.",
-  "class": "sent-message"
-},
-{
-  "content": "This",
-  "class": "sent-message"
-},
-{
-  "content": "This xD",
-  "class": "received-message"
-},
-{
-  "content": "This is some text within a card body.",
-  "class": "received-message"
-},
-{
-  "content": "This is some text within a card body. \"class\": background-color: #ffedda; background-color: #ffedda; background-color: #ffedda; background-color: #ffedda; background-color: #ffedda; background-color: #ffedda;\"sent-message\" \"class\": \"sent-message\" \"class\": \"sent-message\" \"class\": \"sent-message\"This is some text within a card body.",
-  "class": "received-message"
-},
-{
-  "content": "This is some text within a card body. This is some text within a card body. This is some text within a card body. This is some text within a card body. This is some text within a card body.",
-  "class": "sent-message"
-},
-    {
-      "content": "This xD",
-      "class": "received-message"
-    },
-    {
-      "content": "This is some text within a card body.",
-      "class": "received-message"
-    },
-    {
-      "content": "This is some text within a card body. \"class\": background-color: #ffedda; background-color: #ffedda; background-color: #ffedda; background-color: #ffedda; background-color: #ffedda; background-color: #ffedda;\"sent-message\" \"class\": \"sent-message\" \"class\": \"sent-message\" \"class\": \"sent-message\"This is some text within a card body.",
-      "class": "received-message"
-    },
-    {
-      "content": "This is some text within a card body. This is some text within a card body. This is some text within a card body. This is some text within a card body. This is some text within a card body.",
-      "class": "sent-message"
-    },
-    {
-      "content": "This xD",
-      "class": "received-message"
-    },
-    {
-      "content": "This is some text within a card body.",
-      "class": "received-message"
-    },
-    {
-      "content": "This is some text within a card body. \"class\": background-color: #ffedda; background-color: #ffedda; background-color: #ffedda; background-color: #ffedda; background-color: #ffedda; background-color: #ffedda;\"sent-message\" \"class\": \"sent-message\" \"class\": \"sent-message\" \"class\": \"sent-message\"This is some text within a card body.",
-      "class": "received-message"
-    },
-    {
-      "content": "This is some text within a card body. This is some text within a card body. This is some text within a card body. This is some text within a card body. This is some text within a card body.",
-      "class": "sent-message"
-    }
-];
+  messages = [];
 
-  constructor() { }
+  constructor(private messageService: MessageService) { }
 
   ngOnInit() {
+    this.initializeMessageStream();
+  }
+
+  initializeMessageStream() {
+    let receivedMessageObservable = this.messageService.getReceivedMessageAsObservable();
+    let receivedMessageObserver = {
+      next: (message) => {
+        if (message && message.body) {
+          let messageItem = {
+            'content': JSON.parse(message.body).content,
+            'class': 'received-message'
+          };
+          this.messages.push(messageItem);
+        }
+      }
+    };
+    receivedMessageObservable.subscribe(receivedMessageObserver);
+    let sentMessageObservable = this.messageService.getSentMessageAsObservable();
+    let sentMessageObserver = {
+      next: (message) => {
+        let messageItem = {
+          'content': message,
+          'class': 'sent-message'
+        };
+        this.messages.push(messageItem);
+      }
+    };
+    sentMessageObservable.subscribe(sentMessageObserver);
   }
 
 }
