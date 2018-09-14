@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {mockupDateSent, mockupUsers} from "../mockup";
+import {mockupDateSent, mockupUsers} from "../../../mockup";
 
 @Component({
   selector: 'app-chatlist',
