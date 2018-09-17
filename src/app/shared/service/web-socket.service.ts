@@ -44,6 +44,13 @@ export class WebSocketService {
     this.stompClient = Stomp.over(socket);
     let that = this;
     that.stompClient.connect({token: this.authenticationService.jwtToken}, function (frame) {
+      var msg = {
+        type: 'authenticate',
+        payload: { token: that.authenticationService.jwtToken }
+      };
+      that.stompClient.send(environment.webSocketEndpoint, {}, JSON.stringify(msg));
+
+
       let url = that.stompClient.ws._transport.url;
       let sessionId = WebSocketService.getSessionId(url);
 
