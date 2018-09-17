@@ -44,9 +44,9 @@ export class WebSocketService {
     let socket = new SockJS(environment.url + environment.webSocketEndpoint);
     this.stompClient = Stomp.over(socket);
     let that = this;
-    let b64Header = new HttpHeaders({
+    let b64Header = {
       authorization : 'Basic ' + btoa("grzegorz" + ':' + "dupa")
-    });
+    };
     that.stompClient.connect(b64Header, function (frame) {
       let url = that.stompClient.ws._transport.url;
       let sessionId = WebSocketService.getSessionId(url);
