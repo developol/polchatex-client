@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {mockupDateSent, mockupUsers} from "../../../mockup";
+import {ChatService} from '../../../shared/service/chat.service';
 
 @Component({
   selector: 'app-chatlist',
@@ -9,7 +10,7 @@ import {mockupDateSent, mockupUsers} from "../../../mockup";
 export class ChatlistComponent implements OnInit {
   dateSent = mockupDateSent;
   users = mockupUsers;
-  constructor() { }
+  constructor(chatService: ChatService) { }
 
   ngOnInit() {
   }
