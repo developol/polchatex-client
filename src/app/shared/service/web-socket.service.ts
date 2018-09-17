@@ -44,7 +44,7 @@ export class WebSocketService {
     let socket = new SockJS("https://" + this.authenticationService.jwtToken + "@" + "polchatex-server.herokuapp.com" + environment.webSocketEndpoint);
     this.stompClient = Stomp.over(socket);
     let that = this;
-    that.stompClient.connect({"Authorization" : "JWT " + this.authenticationService.jwtToken}, function (frame) {
+    that.stompClient.connect({}, function (frame) {
       let url = that.stompClient.ws._transport.url;
       let sessionId = WebSocketService.getSessionId(url);
 
