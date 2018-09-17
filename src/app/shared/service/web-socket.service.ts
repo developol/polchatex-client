@@ -24,7 +24,7 @@ export class WebSocketService {
   receivedMessageSubject: Subject<any> = new Subject<any>();
 
   confirmAuthentication(): void {
-    if (this.authenticationService.checkIfCookieExists()) {
+    /*if (this.authenticationService.checkIfCookieExists()) {
       this.initializeWebSocketConnection();
     } else {
       this.tokenCookieObservable.subscribe({
@@ -34,7 +34,8 @@ export class WebSocketService {
           }
         }
       });
-    }
+    }*/
+    this.initializeWebSocketConnection();
   }
 
   initializeWebSocketConnection(): void {
@@ -44,10 +45,7 @@ export class WebSocketService {
     let socket = new SockJS(environment.url + environment.webSocketEndpoint);
     this.stompClient = Stomp.over(socket);
     let that = this;
-    let b64Header = {
-      authorization : 'Basic ' + btoa("grzegorz" + ':' + "dupa")
-    };
-    that.stompClient.connect(b64Header, function (frame) {
+    that.stompClient.connect({}, function (frame) {
       let url = that.stompClient.ws._transport.url;
       let sessionId = WebSocketService.getSessionId(url);
 
