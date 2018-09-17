@@ -49,7 +49,6 @@ export class WebSocketService {
 
       console.log('Connected: ' + frame);
       console.log("Your current session is: " + sessionId);
-
       that.stompClient.subscribe(environment.subscriptionEndpoint + '-user' + sessionId,
           message => that.onMessageReceived(message));
     });
