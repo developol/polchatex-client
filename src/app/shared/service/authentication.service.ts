@@ -20,7 +20,8 @@ export class AuthenticationService {
 
 
   basicAuthentication(): Observable<string> {
-    return this.http.get(environment.url + "/security/tknauth", {headers: this.b64Header, responseType: "text"});
+    return this.http.get(environment.url + "/security/tknauth", {headers: this.b64Header, responseType: "text",
+      withCredentials:true});
   }
 
   setCookie(): void {
@@ -30,7 +31,7 @@ export class AuthenticationService {
     this.basicAuthentication().subscribe((token: string) => {
       this.jwtToken = token;
       console.log(this.jwtToken);
-      this.cookieService.set("JSESSIONID", this.jwtToken, null, "/", "localhost", false);
+      this.cookieService.set("JSESSIONID", this.jwtToken, null, "/", "", false);
       this.setTokenCookie(this.checkIfCookieExists());
     });
   }
