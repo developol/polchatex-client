@@ -4,6 +4,7 @@ import * as SockJS from 'sockjs-client';
 import {environment} from "../../../environments/environment";
 import {Observable, Subject} from "rxjs";
 import {AuthenticationService} from './authentication.service';
+import {HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -40,11 +41,13 @@ export class WebSocketService {
     if (this.webSocketinitialized) {
       return;
     }
-    //let socket = new SockJS(environment.url + environment.webSocketEndpoint);
-    let socket = new SockJS("https://" + this.authenticationService.jwtToken + "@" + "polchatex-server.herokuapp.com" + environment.webSocketEndpoint);
+    let socket = new SockJS(environment.url + environment.webSocketEndpoint);
     this.stompClient = Stomp.over(socket);
     let that = this;
-    that.stompClient.connect({}, function (frame) {
+    let b64Header = new HttpHeaders({
+      authorization : 'Basic ' + btoa("grzegorz" + ':' + "dupa")
+    });
+    that.stompClient.connect(b64Header, function (frame) {
       let url = that.stompClient.ws._transport.url;
       let sessionId = WebSocketService.getSessionId(url);
 
