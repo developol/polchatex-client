@@ -39,7 +39,7 @@ export class LoginViewComponent implements OnInit {
 
   login() {
     this.http.post<Observable<boolean>>(environment.url + "/login", {
-      userName: this.username,
+      username: this.username,
       password: this.password
     }).subscribe(isValid => {
       if (isValid) {
