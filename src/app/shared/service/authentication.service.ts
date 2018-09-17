@@ -20,8 +20,7 @@ export class AuthenticationService {
 
 
   basicAuthentication(): Observable<string> {
-    return this.http.get(environment.url + "/security/tknauth", {headers: this.b64Header, responseType: "text",
-      withCredentials:true});
+    return this.http.get(environment.url + "/security/tknauth", {headers: this.b64Header, responseType: "text"});
   }
 
   setCookie(): void {
