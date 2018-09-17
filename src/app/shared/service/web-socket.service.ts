@@ -41,7 +41,7 @@ export class WebSocketService {
       return;
     }
     //let socket = new SockJS(environment.url + environment.webSocketEndpoint);
-    let socket = new SockJS("https://" + this.authenticationService.jwtToken + "@" + "agile-hollows-19556.herokuapp.com" + environment.webSocketEndpoint);
+    let socket = new SockJS("https://" + this.authenticationService.jwtToken + "@" + "polchatex-server.herokuapp.com" + environment.webSocketEndpoint);
     this.stompClient = Stomp.over(socket);
     let that = this;
     that.stompClient.connect({"Authorization" : "JWT " + this.authenticationService.jwtToken}, function (frame) {
