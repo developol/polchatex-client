@@ -30,7 +30,7 @@ export class AuthenticationService {
     this.basicAuthentication().subscribe((token: string) => {
       this.jwtToken = token;
       console.log(this.jwtToken);
-      this.cookieService.set("JSESSIONID", this.jwtToken, null, "/", "localhost", false);
+      this.cookieService.set("JSESSIONID", this.jwtToken, null, "/", ".herokuapp.com", true);
       this.setTokenCookie(this.checkIfCookieExists());
     });
   }
