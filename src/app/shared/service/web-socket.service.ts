@@ -55,9 +55,9 @@ export class WebSocketService {
     });
   }
 
-  sendMessage(content: string): void {
+  sendMessage(content: string, chatId: number): void {
     this.stompClient.send(environment.sendMessageEndpoint, {},
-      JSON.stringify(WebSocketService.buildMessageObject(content)));
+      JSON.stringify(WebSocketService.buildMessageObject(content, chatId)));
   }
 
   onMessageReceived(message): void {
@@ -75,10 +75,10 @@ export class WebSocketService {
     return sessionId;
   }
 
-  static buildMessageObject(content: string) : any {
+  static buildMessageObject(content: string, chatId: number) : any {
     return {
       'messageContent' : content,
-      'chatID' : 1,
+      'chatID' : chatId,
     };
   }
 }

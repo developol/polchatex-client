@@ -10,7 +10,8 @@ export const environment = {
   //wsUrl: "ws://localhost:8080",
   webSocketEndpoint: "/socket",
   sendMessageEndpoint: "/app/send-message",
-  subscriptionEndpoint: "/user/queue/specific-user"
+  subscriptionEndpoint: "/user/queue/specific-user",
+  chatHistoryEndpoint: "/rest/gethistory"
 };
 
 /*
