@@ -4,8 +4,6 @@
 
 export const environment = {
   production: false,
-  url: "https://agile-hollows-19556.herokuapp.com",
-  wsUrl: "wss://agile-hollows-19556.herokuapp.com",
   //url: "http://localhost:8080",
   //wsUrl: "ws://localhost:8080",
   webSocketEndpoint: "/socket",
