@@ -43,7 +43,7 @@ export class WebSocketService {
     let socket = new SockJS(environment.url + environment.webSocketEndpoint);
     this.stompClient = Stomp.over(socket);
     let that = this;
-    that.stompClient.connect({}, function (frame) {
+    that.stompClient.connect({token: this.authenticationService.jwtToken}, function (frame) {
       let url = that.stompClient.ws._transport.url;
       let sessionId = WebSocketService.getSessionId(url);
 

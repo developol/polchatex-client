@@ -11,7 +11,7 @@ export class AuthenticationService {
 
   private _credentials: any;
   private b64Header: HttpHeaders;
-  private jwtToken: string;
+  jwtToken: string;
   private readonly tokenCookie: Subject<boolean>;
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
