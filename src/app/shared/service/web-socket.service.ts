@@ -77,8 +77,8 @@ export class WebSocketService {
 
   static buildMessageObject(content: string) : any {
     return {
-      'messageContent' : content,
-      'chatID' : 1,
+      'content' : content,
+      'isRead' : false,
     };
   }
 }
