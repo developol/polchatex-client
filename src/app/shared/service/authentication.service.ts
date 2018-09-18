@@ -30,13 +30,14 @@ export class AuthenticationService {
     this.basicAuthentication().subscribe((token: string) => {
       this.jwtToken = token;
       console.log(this.jwtToken);
-      this.cookieService.set("JSESSIONID", this.jwtToken, null,"/", "localhost", false);
+      //this.cookieService.set("JSESSIONID", this.jwtToken, null,"/", "localhost", false);
       this.setTokenCookie(this.checkIfCookieExists());
     });
   }
 
   checkIfCookieExists():boolean  {
-    return this.cookieService.check('JSESSIONID')
+    //return this.cookieService.check('JSESSIONID')
+    return true;
   }
 
   getTokenCookieObservable(): Observable<boolean> {
