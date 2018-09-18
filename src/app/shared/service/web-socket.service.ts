@@ -12,23 +12,23 @@ import {AuthenticationService} from './authentication.service';
 
 export class WebSocketService {
   constructor(private authenticationService: AuthenticationService) {
-    this.tokenCookieObservable = this.authenticationService.getTokenCookieObservable();
+    this.tokenObservable = this.authenticationService.getTokenObservable();
     this.confirmAuthentication();
   }
 
-  private tokenCookieObservable: Observable<boolean>;
+  private tokenObservable: Observable<boolean>;
   webSocketinitialized: boolean = false;
 
   stompClient: any;
   receivedMessageSubject: Subject<any> = new Subject<any>();
 
   confirmAuthentication(): void {
-    if (this.authenticationService.checkIfCookieExists()) {
+    if (this.authenticationService.checkIfTokenExists()) {
       this.initializeWebSocketConnection();
     } else {
-      this.tokenCookieObservable.subscribe({
-        next: cookie => {
-          if (cookie) {
+      this.tokenObservable.subscribe({
+        next: token => {
+          if (token) {
             this.initializeWebSocketConnection();
           }
         }

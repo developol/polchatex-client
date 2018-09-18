@@ -7,6 +7,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import { ChatViewComponent } from './chat-view.component';
+import {AppRoutingModule} from "../../routing/app-routing.module";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ChatViewComponent } from './chat-view.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   exports: [
     ChatlistComponent,

@@ -6,7 +6,8 @@ import {RoutingGuard} from "./routing-guard";
 
 const routes: Routes = [
   {path: '', component: LoginViewComponent},
-  {path: 'chat', component: ChatViewComponent, canActivate: [RoutingGuard]}
+  {path: 'chat', component: ChatViewComponent, canActivate: [RoutingGuard]},
+  {path: '**', component: LoginViewComponent}
 ];
 
 @NgModule({
