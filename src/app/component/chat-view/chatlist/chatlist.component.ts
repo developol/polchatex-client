@@ -16,14 +16,24 @@ export class ChatlistComponent implements OnInit {
   constructor(private chatService: ChatService, private messageService: MessageService) { }
 
   ngOnInit() {
-    this.chatService.getChatList().subscribe( result => this.chatList = result);
-    console.log("---");
-    console.log(this.chatList);
-    console.log("---");
+    this.chatService.getChatList().subscribe( result =>this.chatList = result);
+    this.prepareChatNames();
   }
 
   test() {
     console.log("dupa");
+  }
+
+  prepareChatNames(): void {
+    let placeholderName: string = "";
+    for(let chat of this.chatList) {
+      if (chat.chatName === null) {
+          for (let usr of chat.usernames) {
+            placeholderName.concat(usr);
+          }
+          chat.chatName = placeholderName;
+      }
+    }
   }
 
 }
