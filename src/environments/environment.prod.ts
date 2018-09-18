@@ -6,5 +6,5 @@ export const environment = {
   sendMessageEndpoint: "/app/send-message",
   subscriptionEndpoint: "/user/queue/specific-user",
   chatHistoryEndpoint: "/rest/gethistory",
-  tokenAutorizationEndpoint: "/registration/tknauth"
+  tokenAutorizationEndpoint: "/security/tknauth"
 };
