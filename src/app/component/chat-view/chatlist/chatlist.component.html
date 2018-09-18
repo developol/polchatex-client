@@ -1,9 +1,13 @@
 <nav id="sidebar">
   <div class="list-group pre-scrollable">
-    <div *ngFor="let user of users" (click)="test()" class="list-group-item list-group-item-action flex-column align-items-start">
-        <h5 >{{user.name}}</h5>
-        <small class="text-muted">{{dateSent}}</small>
-      <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+    <div *ngFor="let chat of chatList" (click)="test()" class="list-group-item list-group-item-action flex-column align-items-start">
+        <h5 >{{chat.chatName}}</h5>
+      <div *ngIf="chat.lastMessage;else no_msg">
+      <small class="text-muted">{{chat.lastMessage.createDateTime}}</small>
+      <p class="mb-1">{{chat.lastMessage.content}}</p>
+    </div>
+      <ng-template #no_msg><small class="text-muted">000</small>
+        <p class="mb-1">goowno w dupie</p></ng-template>
     </div>
   </div>
 </nav>
