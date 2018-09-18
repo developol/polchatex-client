@@ -33,9 +33,6 @@ export class AuthenticationService {
       console.log(this.jwtToken);
       this.cookieService.set("JSESSIONID", this.jwtToken);
       this.setTokenCookie(this.checkIfCookieExists());
-      this.http.get(environment.url + "/rest/getchatlist").subscribe(response => {
-        console.log(response);
-      })
     });
   }
 

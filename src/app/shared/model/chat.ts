@@ -1,8 +1,15 @@
 import {Message} from './message';
 
 export class Chat {
-  public id: number;
-  public chatName: String;
-  public usernames: String[];
-  public lastMessage: Message
+  id: number;
+  chatName: String;
+  usernames: String[];
+  lastMessage: Message
+
+  constructor(id: number, chatName: String, usernames: String[], lastMessage: Message) {
+    this.id = id;
+    this.chatName = chatName;
+    this.usernames = usernames;
+    this.lastMessage = lastMessage;
+  }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {mockupDateSent, mockupUsers} from "../../../mockup";
 import {ChatService} from '../../../shared/service/chat.service';
 import {MessageService} from "../../../shared/service/message.service";
+import {Chat} from '../../../shared/model/chat';
 
 @Component({
   selector: 'app-chatlist',
@@ -11,11 +12,14 @@ import {MessageService} from "../../../shared/service/message.service";
 export class ChatlistComponent implements OnInit {
   dateSent = mockupDateSent;
   users = mockupUsers;
+  chatList: Chat[];
   constructor(private chatService: ChatService, private messageService: MessageService) { }
 
   ngOnInit() {
-    this.messageService.sendMessage("dupa", 3);
-    console.log("sent")
+    this.chatService.getChatList().subscribe( result => this.chatList = result);
+    console.log("---");
+    console.log(this.chatList);
+    console.log("---");
   }
 
   test() {

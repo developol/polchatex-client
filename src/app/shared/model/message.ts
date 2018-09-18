@@ -1,8 +1,17 @@
 export class Message {
-  public id: number;
-  public chatID: number;
-  public sender: string;
-  public content: String;
-  public createDateTime: String;
-  public isRead: boolean;
+  id: number;
+  chatID: number;
+  sender: string;
+  content: String;
+  createDateTime: String;
+  isRead: boolean;
+
+  constructor(id: number, chatID: number, sender: string, content: String, createDateTime: String, isRead: boolean) {
+    this.id = id;
+    this.chatID = chatID;
+    this.sender = sender;
+    this.content = content;
+    this.createDateTime = createDateTime;
+    this.isRead = isRead;
+  }
 }
