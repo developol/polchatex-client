@@ -7,6 +7,6 @@ export class RoutingGuard implements CanActivate {
   constructor(private authenticationService: AuthenticationService) {}
 
   canActivate(): boolean {
-    return this.authenticationService.checkIfCookieExists();
+    return this.authenticationService.authenticated;
   }
 }

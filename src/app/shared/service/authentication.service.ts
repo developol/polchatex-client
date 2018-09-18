@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
-import {CookieService} from 'ngx-cookie-service';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-
   private _credentials: any;
   private b64Header: HttpHeaders;
   private jwtToken: string;
-  private readonly tokenCookie: Subject<boolean>;
+  private readonly authenticatedSubject: Subject<boolean>;
+  private _authenticated: boolean = false;
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.tokenCookie = new Subject<boolean>();
+  constructor(private http: HttpClient) {
+    this.authenticatedSubject = new Subject<boolean>();
   }
 
 
@@ -24,27 +23,22 @@ export class AuthenticationService {
       withCredentials: true});
   }
 
-  setCookie(): void {
+  authenticate(): void {
     this.b64Header = new HttpHeaders({
       authorization : 'Basic ' + btoa(this._credentials.username + ':' + this._credentials.password)
     });
     this.basicAuthentication().subscribe((token: string) => {
       this.jwtToken = token;
-      console.log(this.jwtToken);
-      this.cookieService.set("JSESSIONID", this.jwtToken);
-      this.setTokenCookie(this.checkIfCookieExists());
-    });
+      this.setAuthenticatedSubject(true);
+      this._authenticated = true;
+    }, () => alert("NIE ZNASZ HASLA :<"));
   }
 
-  checkIfCookieExists():boolean  {
-    return this.cookieService.check('JSESSIONID')
+  getAuthenticatedObservable(): Observable<boolean> {
+    return this.authenticatedSubject.asObservable();
   }
-
-  getTokenCookieObservable(): Observable<boolean> {
-    return this.tokenCookie.asObservable();
-  }
-  setTokenCookie(token: boolean): void {
-    this.tokenCookie.next(token);
+  setAuthenticatedSubject(token: boolean): void {
+    this.authenticatedSubject.next(token);
   }
 
 
@@ -55,6 +49,10 @@ export class AuthenticationService {
 
   set_credentials(value: any) {
     this._credentials = value;
+  }
+
+  get authenticated(): boolean {
+    return this._authenticated;
   }
 
 }
