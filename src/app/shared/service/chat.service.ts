@@ -11,8 +11,8 @@ export class ChatService {
 
   getChatHistory(chatId: number): void {
     let params = new HttpParams().set("chatID", "" + chatId);
-    this.http.get(environment.url + environment.chatHistoryEndpoint, {params: params}).subscribe(
-      response => console.log(response)
-    )
+    //this.http.get(environment.url + environment.chatHistoryEndpoint, {params: params}).subscribe(
+      //response => console.log(response)
+    //)
   }
 }
