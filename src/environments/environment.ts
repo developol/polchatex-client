@@ -4,14 +4,13 @@
 
 export const environment = {
   production: false,
-  url: "https://agile-hollows-19556.herokuapp.com",
-  wsUrl: "wss://agile-hollows-19556.herokuapp.com",
-  //url: "http://localhost:8080",
-  //wsUrl: "ws://localhost:8080",
+  url: "http://localhost:8080",
+  wsUrl: "ws://localhost:8080",
   webSocketEndpoint: "/socket",
   sendMessageEndpoint: "/app/send-message",
   subscriptionEndpoint: "/user/queue/specific-user",
-  chatHistoryEndpoint: "/rest/gethistory"
+  chatHistoryEndpoint: "/rest/gethistory",
+  tokenAutorizationEndpoint: "/security/tknauth"
 };
 
 /*
