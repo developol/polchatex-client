@@ -15,14 +15,11 @@ export class MessageService {
   sentMessageSubject: Subject<any> = new Subject<any>();
 
   initializeSentMessageStreamFromWebSocketService(): void {
-    let observable = this.webSocketService.getReceivedMessageAsObservable();
-    let observer = {
-      next: (message) => this.addReceivedMessageToSubject(message)
-    };
-    observable.subscribe(observer);
+    this.webSocketService.getReceivedMessageAsObservable().subscribe(
+      (message) => this.addReceivedMessageToSubject(message));
   }
 
-  getReceivedMessageAsObservable(): Observable<any>{
+  getReceivedMessageAsObservable(): Observable<any> {
     return this.receivedMessageSubject.asObservable();
   }
 

@@ -3,7 +3,7 @@
     <div *ngFor="let chat of chatList" (click)="onChatClicked(chat)" class="list-group-item list-group-item-action flex-column align-items-start">
         <h5 >{{chat.chatName}}</h5>
         <small *ngIf="chat.lastMessage" class="text-muted">{{chat.lastMessage.createDateTime}}</small>
-      <p *ngIf="chat.lastMessage && chat.usernames.length > 2" class="mb-1">{{chat.lastMessage.senderID}}: </p>
+      <p *ngIf="chat.lastMessage && chat.usernames.length > 2" class="mb-1">{{chat.lastMessage.sender}}: </p>
       <p *ngIf="chat.lastMessage" class="mb-1">{{chat.lastMessage.content}}</p>
     </div>
   </div>

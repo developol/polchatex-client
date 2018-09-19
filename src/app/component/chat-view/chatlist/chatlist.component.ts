@@ -25,15 +25,19 @@ export class ChatlistComponent implements OnInit {
   }
 
   prepareChatNames(): void {
-    let placeholderName: string = "";
     for(let chat of this.chatList) {
       if (chat.chatName === null) {
+        chat.chatName = "";
+        let first = true;
           for (let usr of chat.usernames) {
-            if (usr != "dupa") {
-              placeholderName = placeholderName + usr + ", ";
+            if (usr != sessionStorage.getItem("USERNAME")) {
+              if (!first) {
+                chat.chatName += ", ";
+              }
+              first = false;
+              chat.chatName += usr;
             }
           }
-          chat.chatName = placeholderName.slice(0, placeholderName.length-2);
       }
     }
   }

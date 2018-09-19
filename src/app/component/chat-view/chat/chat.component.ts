@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MessageService} from "../../../shared/service/message.service";
 import {ChatService} from "../../../shared/service/chat.service";
 import {Chat} from "../../../shared/model/chat";
+import {Message} from "../../../shared/model/message";
 
 @Component({
   selector: 'app-chat',
@@ -10,7 +11,7 @@ import {Chat} from "../../../shared/model/chat";
 })
 export class ChatComponent implements OnInit {
   currentMessages: MessageItem[];
-  messages: Map<Chat, MessageItem[]> = new Map<Chat, MessageItem[]>();
+  messages: Map<number, MessageItem[]> = new Map<number, MessageItem[]>();
 
   activeChat: Chat;
 
@@ -18,32 +19,48 @@ export class ChatComponent implements OnInit {
               private chatService: ChatService) { }
 
   ngOnInit() {
-    this.chatService.getActiveChatAsObservable().subscribe(
-      chat => {
-        this.activeChat = chat;
-        if (this.messages.get(chat)) {
-          this.currentMessages = this.messages.get(this.activeChat);
-        } else {
-          this.currentMessages = [];
-          this.chatService.getChatHistory(chat.id).subscribe(
-            messages => messages.forEach(message => {
-              // TODO sent/received
-              this.currentMessages.push(new MessageItem(message.content, MessageType.RECEIVED));
-            })
-          )
-        }
-      });
-    let that = this;
-    setTimeout(function() {that.chatService.getChatHistory(3)}, 1000);
+    this.initializeChatHistory();
     this.initializeMessageStream();
   }
 
+  initializeChatHistory() {
+    this.chatService.getActiveChatAsObservable().subscribe(
+      chat => {
+        this.activeChat = chat;
+        if (this.messages.get(chat.id)) {
+          this.currentMessages = this.messages.get(chat.id);
+        } else {
+          this.currentMessages = [];
+          this.chatService.getChatHistory(chat.id).subscribe(
+            messages => {
+              messages.forEach(message => {
+                if (message.sender == sessionStorage.getItem("USERNAME")) {
+                  this.currentMessages.push(new MessageItem(message.content, MessageType.SENT));
+                } else {
+                  this.currentMessages.push(new MessageItem(message.content, MessageType.RECEIVED));
+                }
+              });
+              this.messages.set(chat.id, this.currentMessages);
+            }
+          )
+        }
+      });
+  }
+
   initializeMessageStream() {
+    setInterval(() => console.log(this.messages), 1000);
     this.messageService.getReceivedMessageAsObservable().subscribe(
       (message) => {
         if (message && message.body) {
-          let content = JSON.parse(message.body).content;
-          this.currentMessages.push(new MessageItem(content, MessageType.RECEIVED));
+          let msg = JSON.parse(message.body);
+          let messageItem = new MessageItem(msg.content, MessageType.RECEIVED);
+          if (this.messages.get(msg.chat.id)) {
+            this.messages.get(msg.chat.id).push(messageItem);
+            //this.activeChat.lastMessage.content = "kurwa";
+            //TODO aktualizacja lastmessage w chacie (obiektowosc dziala z chatlist)
+          } else {
+            this.messages.set(msg.chat.id, [messageItem]);
+          }
         }
       }
     );
