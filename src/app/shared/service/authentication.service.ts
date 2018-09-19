@@ -7,38 +7,63 @@ import {environment} from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AuthenticationService {
+
   private _credentials: any;
   private b64Header: HttpHeaders;
   private jwtToken: string;
-  private readonly authenticatedSubject: Subject<boolean>;
-  private _authenticated: boolean = false;
+  private readonly tokenSubject: Subject<boolean>;
 
   constructor(private http: HttpClient) {
-    this.authenticatedSubject = new Subject<boolean>();
+    this.tokenSubject = new Subject<boolean>();
   }
 
 
   basicAuthentication(): Observable<string> {
-    return this.http.get(environment.url + environment.tokenAutorizationEndpoint, {headers: this.b64Header, responseType: "text",
+    return this.http.get(environment.url + environment.tokenAutorizationEndpoint,
+      {headers: this.b64Header, responseType: "text",
       withCredentials: true});
   }
 
-  authenticate(): void {
+  setToken(): void {
     this.b64Header = new HttpHeaders({
       authorization : 'Basic ' + btoa(this._credentials.username + ':' + this._credentials.password)
     });
     this.basicAuthentication().subscribe((token: string) => {
       this.jwtToken = token;
-      this.setAuthenticatedSubject(true);
-      this._authenticated = true;
-    }, () => alert("NIE ZNASZ HASLA :<"));
+      console.log(this.jwtToken);
+      sessionStorage.setItem("JSESSIONID", this.jwtToken);
+      this.setTokenObservable(this.checkIfTokenExists());
+    });
   }
 
-  getAuthenticatedObservable(): Observable<boolean> {
-    return this.authenticatedSubject.asObservable();
+  deleteToken(): void {
+    sessionStorage.removeItem("JSESSIONID");
   }
-  setAuthenticatedSubject(token: boolean): void {
-    this.authenticatedSubject.next(token);
+
+  checkIfTokenExists(): boolean  {
+    console.log(sessionStorage.getItem("JSESSIONID"));
+    let jsessionid = sessionStorage.getItem("JSESSIONID");
+    return (jsessionid) ? jsessionid.length > 0 : false;
+  }
+
+  checkIfCookieIsValidObservable(): Observable<boolean> {
+    let validSubject: Subject<boolean> = new Subject();
+    if (this.checkIfTokenExists()) {
+      this.http.get(environment.url + environment.chatListEndpoint,
+        {withCredentials: true})
+        .subscribe((response) => validSubject.next(true),
+            (error) => validSubject.next(false));
+    } else {
+      validSubject.next(false);
+    }
+    return validSubject.asObservable();
+  }
+
+  getTokenObservable(): Observable<boolean> {
+    return this.tokenSubject.asObservable();
+  }
+  setTokenObservable(token: boolean): void {
+    this.tokenSubject.next(token);
   }
 
 
@@ -49,10 +74,6 @@ export class AuthenticationService {
 
   set_credentials(value: any) {
     this._credentials = value;
-  }
-
-  get authenticated(): boolean {
-    return this._authenticated;
   }
 
 }
