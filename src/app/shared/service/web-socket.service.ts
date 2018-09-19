@@ -4,6 +4,7 @@ import * as SockJS from 'sockjs-client';
 import {environment} from "../../../environments/environment";
 import {Observable, Subject} from "rxjs";
 import {AuthenticationService} from './authentication.service';
+import {Message} from "../model/message";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class WebSocketService {
   webSocketinitialized: boolean = false;
 
   stompClient: any;
-  receivedMessageSubject: Subject<any> = new Subject<any>();
+  receivedMessageSubject: Subject<Message> = new Subject<Message>();
 
   confirmAuthentication(): void {
     if (this.authenticationService.checkIfTokenExists()) {
@@ -60,10 +61,12 @@ export class WebSocketService {
   }
 
   onMessageReceived(message): void {
-    this.receivedMessageSubject.next(message);
+    let msg = JSON.parse(message.body);
+    let parsedMsg = new Message(msg.id, msg.chatID, msg.sender, msg.content, msg.createDateTime, msg.isRead);
+    this.receivedMessageSubject.next(parsedMsg);
   }
 
-  getReceivedMessageAsObservable(): Observable<any> {
+  getReceivedMessageAsObservable(): Observable<Message> {
     return this.receivedMessageSubject.asObservable();
   }
 

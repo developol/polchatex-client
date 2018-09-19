@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {mockupDateSent, mockupUsers} from "../../../mockup";
 import {ChatService} from '../../../shared/service/chat.service';
 import {Chat} from '../../../shared/model/chat';
 
@@ -13,10 +12,14 @@ export class ChatlistComponent implements OnInit {
   constructor(private chatService: ChatService) { }
 
   ngOnInit() {
-    this.chatService.getChatList().subscribe( result => {
-      this.chatList = result;
-      this.prepareChatNames();
-      this.prepareMessageTime();
+    this.chatService.getChatListLoaded().subscribe(loaded => {
+      if (loaded) {
+        this.chatList = this.chatService.chatList;
+        this.prepareChatNames();
+        this.prepareMessageTimes();
+        this.chatService.updateChatList(null);
+        this.chatService.setActiveChat(this.chatList[0]);
+      }
     });
   }
 
@@ -26,29 +29,39 @@ export class ChatlistComponent implements OnInit {
 
   prepareChatNames(): void {
     for(let chat of this.chatList) {
-      if (chat.chatName === null) {
-        chat.chatName = "";
-        let first = true;
-          for (let usr of chat.usernames) {
-            if (usr != sessionStorage.getItem("USERNAME")) {
-              if (!first) {
-                chat.chatName += ", ";
-              }
-              first = false;
-              chat.chatName += usr;
-            }
+      ChatlistComponent.prepareChatName(chat);
+    }
+  }
+
+  static prepareChatName(chat: Chat) {
+    if (chat.chatName === null) {
+      chat.chatName = "";
+      let first = true;
+      for (let usr of chat.usernames) {
+        if (usr != sessionStorage.getItem("USERNAME")) {
+          if (!first) {
+            chat.chatName += ", ";
           }
+          first = false;
+          chat.chatName += usr;
+        }
       }
     }
   }
 
-  prepareMessageTime(): void {
+  prepareMessageTimes(): void {
     for (let chat of this.chatList) {
-      if (chat.lastMessage != null) {
-        chat.lastMessage.createDateTime = chat.lastMessage.createDateTime.slice(0, 10)
-          + " "
-          + chat.lastMessage.createDateTime.slice(11, chat.lastMessage.createDateTime.length)
+      ChatlistComponent.prepareMessageTime(chat);
+    }
+  }
+
+  static prepareMessageTime(chat: Chat) {
+    if (chat.lastMessage) {
+      if (!chat.lastMessage.createDateTime) {
       }
+      chat.lastMessage.createDateTime = chat.lastMessage.createDateTime.slice(0, 10)
+        + " "
+        + chat.lastMessage.createDateTime.slice(11, 19)
     }
   }
 

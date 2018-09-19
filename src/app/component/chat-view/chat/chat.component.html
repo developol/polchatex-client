@@ -1,8 +1,8 @@
-<h5>Marek Baraniecki</h5>
+<h5>{{chatName}}</h5>
 <div class="pre-scrollable">
   <p class="received-message hidden-message"></p>
   <p class="sent-message hidden-message"></p>
-  <p *ngFor="let message of currentMessages" class="{{message.class}}">
+  <p *ngFor="let message of currentMessages" class="{{message.type}}">
   {{message.content}}
 </p>
   <hr>

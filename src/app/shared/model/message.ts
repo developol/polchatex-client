@@ -1,5 +1,3 @@
-import {send} from "q";
-
 export class Message {
   id: number;
   chatID: number;
@@ -7,6 +5,7 @@ export class Message {
   content: string;
   createDateTime: string;
   isRead: boolean;
+  type: string;
 
   constructor(id: number, chatID: number, sender: string, content: string, createDateTime: string, isRead: boolean) {
     this.id = id;
