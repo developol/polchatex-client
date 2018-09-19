@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {mockupDateSent, mockupUsers} from "../../../mockup";
 import {ChatService} from '../../../shared/service/chat.service';
-import {MessageService} from "../../../shared/service/message.service";
 import {Chat} from '../../../shared/model/chat';
-import {AuthenticationService} from '../../../shared/service/authentication.service';
 
 @Component({
   selector: 'app-chatlist',
@@ -12,31 +10,30 @@ import {AuthenticationService} from '../../../shared/service/authentication.serv
 })
 export class ChatlistComponent implements OnInit {
   chatList: Chat[];
-  constructor(private chatService: ChatService, private authenticationService: AuthenticationService) { }
+  constructor(private chatService: ChatService) { }
 
   ngOnInit() {
     this.chatService.getChatList().subscribe( result => {
-      this.chatList = result
+      this.chatList = result;
       this.prepareChatNames();
       this.prepareMessageTime();
     });
   }
 
-  test() {
-    console.log("dupa");
+  onChatClicked(chat: Chat) {
+    this.chatService.setActiveChat(chat);
   }
 
   prepareChatNames(): void {
     let placeholderName: string = "";
     for(let chat of this.chatList) {
-      console.log
       if (chat.chatName === null) {
           for (let usr of chat.usernames) {
             if (usr != "dupa") {
               placeholderName = placeholderName + usr + ", ";
             }
           }
-          chat.chatName = placeholderName.slice(0, placeholderName.length-2)
+          chat.chatName = placeholderName.slice(0, placeholderName.length-2);
       }
     }
   }

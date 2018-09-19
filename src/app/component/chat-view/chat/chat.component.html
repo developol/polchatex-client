@@ -2,7 +2,7 @@
 <div class="pre-scrollable">
   <p class="received-message hidden-message"></p>
   <p class="sent-message hidden-message"></p>
-  <p *ngFor="let message of messages" class="{{message.class}}">
+  <p *ngFor="let message of currentMessages" class="{{message.class}}">
   {{message.content}}
 </p>
   <hr>
