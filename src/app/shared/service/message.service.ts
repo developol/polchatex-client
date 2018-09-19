@@ -38,8 +38,8 @@ export class MessageService {
     this.sentMessageSubject.next(message);
   }
 
-  sendMessage(message) {
-    this.webSocketService.sendMessage(message);
+  sendMessage(message, chatId: number) {
+    this.webSocketService.sendMessage(message, chatId);
     this.addSentMessageToSubject(message);
   }
 }

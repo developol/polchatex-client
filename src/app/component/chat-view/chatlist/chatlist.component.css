@@ -13,14 +13,28 @@
 }
 
 .list-group-item-action:active:not(:focus-within) {
-
 }
 
 
-.list-group-item-action:active h5 {
+.list-group-item-action:hover p {
+  background-color: #f8f9fa  !important;
+}
+.list-group-item-action:hover small {
+  background-color: #f8f9fa !important;
+}
+.list-group-item-action:hover .text-muted {
+  background-color: #f8f9fa !important;
+}
+.list-group-item-action:hover h5 {
+  background-color: #f8f9fa !important;
+}
+.bckground:hover {
+  background-color: #f8f9fa !important;
+}
+
+.list-group-item:active h5 {
   background-color: #e9ecef !important;
 }
-
 .list-group-item-action:active p {
   background-color: #e9ecef !important;
 }
@@ -30,6 +44,12 @@
 .list-group-item-action:active .text-muted {
   background-color: #e9ecef !important;
 }
+.list-group-item-action:active h5 {
+  background-color: #e9ecef !important;
+}
+
+
+
 #sidebar.active {
   margin-left: -33%;
 }
@@ -45,6 +65,8 @@
 
 .pre-scrollable {
   max-height: 93vh;
+  min-height: 93vh;
+  min-width: 25vw;
 }
 .navbar {
   height: 7vh;

@@ -5,11 +5,14 @@
   background-color: #f8f9fa;
 }
 #sidebar {
-  width: 28%;
+  width: 25%;
+  min-width: 25vw;
 }
 
 #main {
   width: 100%;
+  max-width: 75vw;
+  min-width: 75vw;
   position: relative;
   background-color: #f8f9fa;
 }

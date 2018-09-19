@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
-import {CookieService} from 'ngx-cookie-service';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
@@ -12,38 +11,59 @@ export class AuthenticationService {
   private _credentials: any;
   private b64Header: HttpHeaders;
   private jwtToken: string;
-  private readonly tokenCookie: Subject<boolean>;
+  private readonly tokenSubject: Subject<boolean>;
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.tokenCookie = new Subject<boolean>();
+  constructor(private http: HttpClient) {
+    this.tokenSubject = new Subject<boolean>();
   }
 
 
   basicAuthentication(): Observable<string> {
-    return this.http.get(environment.url + "/security/tknauth", {headers: this.b64Header, responseType: "text"});
+    return this.http.get(environment.url + environment.tokenAutorizationEndpoint,
+      {headers: this.b64Header, responseType: "text",
+      withCredentials: true});
   }
 
-  setCookie(): void {
+  setToken(): void {
     this.b64Header = new HttpHeaders({
       authorization : 'Basic ' + btoa(this._credentials.username + ':' + this._credentials.password)
     });
     this.basicAuthentication().subscribe((token: string) => {
       this.jwtToken = token;
       console.log(this.jwtToken);
-      this.cookieService.set("JSESSIONID", this.jwtToken, null,"/", "localhost", false);
-      this.setTokenCookie(this.checkIfCookieExists());
+      sessionStorage.setItem("JSESSIONID", this.jwtToken);
+      this.setTokenObservable(this.checkIfTokenExists());
     });
   }
 
-  checkIfCookieExists():boolean  {
-    return this.cookieService.check('JSESSIONID')
+  deleteToken(): void {
+    sessionStorage.removeItem("JSESSIONID");
   }
 
-  getTokenCookieObservable(): Observable<boolean> {
-    return this.tokenCookie.asObservable();
+  checkIfTokenExists(): boolean  {
+    console.log(sessionStorage.getItem("JSESSIONID"));
+    let jsessionid = sessionStorage.getItem("JSESSIONID");
+    return (jsessionid) ? jsessionid.length > 0 : false;
   }
-  setTokenCookie(token: boolean): void {
-    this.tokenCookie.next(token);
+
+  checkIfCookieIsValidObservable(): Observable<boolean> {
+    let validSubject: Subject<boolean> = new Subject();
+    if (this.checkIfTokenExists()) {
+      this.http.get(environment.url + environment.chatListEndpoint,
+        {withCredentials: true})
+        .subscribe((response) => validSubject.next(true),
+            (error) => validSubject.next(false));
+    } else {
+      validSubject.next(false);
+    }
+    return validSubject.asObservable();
+  }
+
+  getTokenObservable(): Observable<boolean> {
+    return this.tokenSubject.asObservable();
+  }
+  setTokenObservable(token: boolean): void {
+    this.tokenSubject.next(token);
   }
 
 

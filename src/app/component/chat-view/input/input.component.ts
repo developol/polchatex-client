@@ -34,7 +34,7 @@ export class InputComponent implements OnInit, OnDestroy {
   }
 
   onSendMessage() {
-    this.messageService.sendMessage(this.message);
+    this.messageService.sendMessage(this.message, 3);
     this.message = '';
   }
 

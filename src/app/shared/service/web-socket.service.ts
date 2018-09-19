@@ -12,23 +12,23 @@ import {AuthenticationService} from './authentication.service';
 
 export class WebSocketService {
   constructor(private authenticationService: AuthenticationService) {
-    this.tokenCookieObservable = this.authenticationService.getTokenCookieObservable();
+    this.tokenObservable = this.authenticationService.getTokenObservable();
     this.confirmAuthentication();
   }
 
-  private tokenCookieObservable: Observable<boolean>;
+  private tokenObservable: Observable<boolean>;
   webSocketinitialized: boolean = false;
 
   stompClient: any;
   receivedMessageSubject: Subject<any> = new Subject<any>();
 
   confirmAuthentication(): void {
-    if (this.authenticationService.checkIfCookieExists()) {
+    if (this.authenticationService.checkIfTokenExists()) {
       this.initializeWebSocketConnection();
     } else {
-      this.tokenCookieObservable.subscribe({
-        next: cookie => {
-          if (cookie) {
+      this.tokenObservable.subscribe({
+        next: token => {
+          if (token) {
             this.initializeWebSocketConnection();
           }
         }
@@ -49,15 +49,14 @@ export class WebSocketService {
 
       console.log('Connected: ' + frame);
       console.log("Your current session is: " + sessionId);
-
       that.stompClient.subscribe(environment.subscriptionEndpoint + '-user' + sessionId,
           message => that.onMessageReceived(message));
     });
   }
 
-  sendMessage(content: string): void {
+  sendMessage(content: string, chatId: number): void {
     this.stompClient.send(environment.sendMessageEndpoint, {},
-      JSON.stringify(WebSocketService.buildMessageObject(content)));
+      JSON.stringify(WebSocketService.buildMessageObject(content, chatId)));
   }
 
   onMessageReceived(message): void {
@@ -75,10 +74,10 @@ export class WebSocketService {
     return sessionId;
   }
 
-  static buildMessageObject(content: string) : any {
+  static buildMessageObject(content: string, chatId: number) : any {
     return {
       'messageContent' : content,
-      'chatID' : 1,
+      'chatID' : chatId,
     };
   }
 }

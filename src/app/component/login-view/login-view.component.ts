@@ -9,7 +9,7 @@ import {AuthenticationService} from "../../shared/service/authentication.service
   styleUrls: ['./login-view.component.css']
 })
 export class LoginViewComponent implements OnInit {
-  private tokenCookieObservable: Observable<boolean>;
+  private tokenObservable: Observable<boolean>;
   username: string = "";
   password: string = "";
 
@@ -17,7 +17,13 @@ export class LoginViewComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-    this.tokenCookieObservable = this.authenticationService.getTokenCookieObservable();
+    this.authenticationService.checkIfCookieIsValidObservable().subscribe(
+      (valid) => {
+        if (valid) {
+          this.router.navigate(['chat'])
+        }
+      });
+    this.tokenObservable = this.authenticationService.getTokenObservable();
     this.confirmAuthentication();
   }
 
@@ -28,13 +34,13 @@ export class LoginViewComponent implements OnInit {
     };
     this.authenticationService.set_credentials(properCredentials);
     console.log(this.authenticationService.credentials);
-    this.authenticationService.setCookie();
+    this.authenticationService.setToken();
   }
 
   confirmAuthentication(): void {
-    this.tokenCookieObservable.subscribe({
-      next: cookie => {
-        if (cookie) {
+    this.tokenObservable.subscribe({
+      next: token => {
+        if (token || this.authenticationService.checkIfTokenExists()) {
           setTimeout(() => this.router.navigate(['chat']), 1000);
         }
       }
