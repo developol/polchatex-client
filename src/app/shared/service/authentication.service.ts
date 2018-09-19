@@ -32,18 +32,19 @@ export class AuthenticationService {
       this.jwtToken = token;
       console.log(this.jwtToken);
       sessionStorage.setItem("JSESSIONID", this.jwtToken);
+      sessionStorage.setItem("USERNAME", this._credentials.username);
       this.setTokenObservable(this.checkIfTokenExists());
     });
   }
 
   deleteToken(): void {
     sessionStorage.removeItem("JSESSIONID");
+    sessionStorage.removeItem("USERNAME");
   }
 
   checkIfTokenExists(): boolean  {
-    console.log(sessionStorage.getItem("JSESSIONID"));
     let jsessionid = sessionStorage.getItem("JSESSIONID");
-    return (jsessionid) ? jsessionid.length > 0 : false;
+    return jsessionid != null;
   }
 
   checkIfCookieIsValidObservable(): Observable<boolean> {
