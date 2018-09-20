@@ -12,8 +12,8 @@
   <div *ngIf="messages.usernameTaken" class="alert alert-info" role="alert">
       That username is already taken!
   </div>
-  <div *ngIf="messages.successfullyRegistered"class="alert alert-success" role="alert">
-    You have successfully registered! Now you can <a href="/login" class="alert-link">Login</a>!
+  <div *ngIf="messages.successfullyRegistered" class="alert alert-success" role="alert">
+    You have successfully registered! Now you can <a [routerLink]="['/login']" class="alert-link">Login</a>!
   </div>
   <div *ngIf="messages.terribleError" class="alert alert-danger" role="alert">
     Something went terribly worng, please try again in a moment!

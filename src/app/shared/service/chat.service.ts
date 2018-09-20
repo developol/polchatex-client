@@ -10,12 +10,14 @@ import {Message} from "../model/message";
 })
 export class ChatService {
   activeChatSubject: Subject<Chat> = new Subject();
+  chatListLoadedSubject: Subject<boolean> = new Subject();
   chatList: Chat[];
   activeChat: Chat;
 
   constructor(private http: HttpClient) {
     this.activeChatSubject.asObservable().subscribe(
       activeChat => this.activeChat = activeChat);
+    this.loadChatList();
   }
 
   getChatHistory(chatId: number): Observable<Message[]> {
@@ -25,21 +27,22 @@ export class ChatService {
   }
 
   getChatListLoaded(): Observable<boolean> {
-    let chatListLoaded: Subject<boolean> = new Subject();
-    this.http.get<Chat[]>(environment.url + "/rest/getchatlist", {withCredentials: true}).subscribe(
-      chatlist => {
+    return this.chatListLoadedSubject.asObservable();
+  }
+
+  loadChatList() {
+    this.http.get<Chat[]>(environment.url + "/rest/getchatlist", {withCredentials: true})
+      .subscribe(chatlist => {
         this.chatList = chatlist;
-        chatListLoaded.next(true);
-      }, () => chatListLoaded.next(false)
-    );
-    return chatListLoaded.asObservable();
+        this.chatListLoadedSubject.next(true);
+      });
   }
 
   addNewChat(user: string) {
     console.log(user);
     this.http.post<string[]>(environment.url + "/rest/addchat",[user], {withCredentials: true})
       .subscribe(
-        () => this.getChatListLoaded(),
+        () => this.loadChatList(),
         () => alert("nie ma takiego usera, no pszypau")
       );
   }
