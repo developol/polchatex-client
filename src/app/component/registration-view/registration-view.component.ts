@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {AuthenticationService} from "../../shared/service/authentication.service";
 
 @Component({
   selector: 'app-registration-view',
@@ -25,12 +25,19 @@ export class RegistrationViewComponent implements OnInit {
     usernameTaken: false,
     passwordTooShort: false,
     terribleError: false
-  }
+  };
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private http: HttpClient,
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
+    this.authenticationService.checkIfCookieIsValidObservable().subscribe(
+      (valid) => {
+        if (valid) {
+          this.router.navigate(['chat'])
+        }
+      });
   }
 
   //TODO: add live username feedback
@@ -47,7 +54,7 @@ export class RegistrationViewComponent implements OnInit {
       "username": this.username.trim(),
       "email": this.email,
       "password": this.password,
-    }
+    };
 
     return this.http.post(environment.url + "/registration/add", requestBody, {observe: 'response'})
   }

@@ -53,10 +53,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
   };
 
   initializeAutoScrolling(): void {
-    setTimeout(() => this.scrollToBottom(), 200);
+    for (let i = 10; i < 25; i++) {
+      setTimeout(() => this.scrollToBottom(), 10 * i);
+    }
     this.messageService.getNewMessageAsObservable().subscribe(
       (message) => {
-        if (message.chatID == this.chatID && message.type == 'received-message') {
+        if (message.chatID == this.chatID) {
           this.scrollToBottom();
         }
       }
