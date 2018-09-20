@@ -36,13 +36,19 @@ export class ChatComponent implements OnInit, AfterViewInit {
         this.currentMessages = [];
         if (this.messages.get(chat.id)) {
           this.currentMessages = this.messages.get(chat.id);
+          for (let i = 0; i < 6; i++) {
+            setTimeout(() => this.scrollToBottom(), 3 * i);
+          }
         } else {
           this.messageService.getChatMessagesLoadedAsObservable().subscribe(
-            () => this.currentMessages = this.messages.get(chat.id))
+            () => this.currentMessages = this.messages.get(chat.id));
+          for (let i = 0; i < 10; i++) {
+            setTimeout(() => this.scrollToBottom(), 3 * i);
+          }
         }
         this.chatName = chat.chatName;
         this.chatID = chat.id;
-        this.scrollToBottom();
+
       }
     )
   }
