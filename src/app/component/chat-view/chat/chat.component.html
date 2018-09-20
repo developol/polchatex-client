@@ -1,5 +1,5 @@
-<h5>{{chatName}}</h5>
-<div class="pre-scrollable">
+<h3>{{chatName}}</h3>
+<div class="pre-scrollable" id="message-box">
   <p class="received-message hidden-message"></p>
   <p class="sent-message hidden-message"></p>
   <p *ngFor="let message of currentMessages" class="{{message.type}}">

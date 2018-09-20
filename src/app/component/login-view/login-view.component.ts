@@ -27,14 +27,15 @@ export class LoginViewComponent implements OnInit {
     this.confirmAuthentication();
   }
 
-  login(username: string, password: string) {
+  login() {
     let properCredentials = {
-      "username": username,
-      "password": password
+      "username": this.username,
+      "password": this.password
     };
     this.authenticationService.set_credentials(properCredentials);
     console.log(this.authenticationService.credentials);
     this.authenticationService.setToken();
+    setTimeout(() => this.password = '', 500);
   }
 
   confirmAuthentication(): void {

@@ -9,6 +9,7 @@ import {ChatService} from "./chat.service";
 })
 export class MessageService {
   messages: Map<number, Message[]> = new Map<number, Message[]>();
+  newMessageSubject: Subject<Message> = new Subject();
 
   constructor(private webSocketService: WebSocketService,
               private chatService: ChatService) {
@@ -31,6 +32,7 @@ export class MessageService {
     this.receivedMessageSubject.asObservable().subscribe(
       (message) => {
         message.type = 'received-message';
+        this.newMessageSubject.next(message);
         if (this.messages.get(message.chatID)) {
           this.messages.get(message.chatID).push(message);
         } else {
@@ -42,6 +44,7 @@ export class MessageService {
     this.sentMessageSubject.asObservable().subscribe(
       (message) => {
         message.type = 'sent-message';
+        this.newMessageSubject.next(message);
         if (this.messages.get(message.chatID)) {
           this.messages.get(message.chatID).push(message);
         } else {
@@ -93,5 +96,9 @@ export class MessageService {
 
   getChatMessagesLoadedAsObservable(): Observable<boolean> {
     return this.chatMessagesLoadedSubject.asObservable();
+  }
+
+  getNewMessageAsObservable(): Observable<Message> {
+    return this.newMessageSubject.asObservable();
   }
 }

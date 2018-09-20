@@ -40,6 +40,8 @@ export class AuthenticationService {
   deleteToken(): void {
     sessionStorage.removeItem("JSESSIONID");
     sessionStorage.removeItem("USERNAME");
+    this.http.get(environment.url + "/security/logout", {withCredentials: true})
+      .subscribe(() => console.log("LOGGED OUT"));
   }
 
   checkIfTokenExists(): boolean  {
@@ -52,8 +54,8 @@ export class AuthenticationService {
     if (this.checkIfTokenExists()) {
       this.http.get(environment.url + environment.chatListEndpoint,
         {withCredentials: true})
-        .subscribe((response) => validSubject.next(true),
-            (error) => validSubject.next(false));
+        .subscribe(() => validSubject.next(true),
+            () => validSubject.next(false));
     } else {
       validSubject.next(false);
     }

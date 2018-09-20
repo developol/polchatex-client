@@ -35,6 +35,15 @@ export class ChatService {
     return chatListLoaded.asObservable();
   }
 
+  addNewChat(user: string) {
+    console.log(user);
+    this.http.post<string[]>(environment.url + "/rest/addchat",[user], {withCredentials: true})
+      .subscribe(
+        () => this.getChatListLoaded(),
+        () => alert("nie ma takiego usera, no pszypau")
+      );
+  }
+
 
   getActiveChatAsObservable(): Observable<Chat> {
     return this.activeChatSubject.asObservable();
