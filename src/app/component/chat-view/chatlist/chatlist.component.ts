@@ -29,40 +29,15 @@ export class ChatlistComponent implements OnInit {
 
   prepareChatNames(): void {
     for(let chat of this.chatList) {
-      ChatlistComponent.prepareChatName(chat);
-    }
-  }
-
-  static prepareChatName(chat: Chat) {
-    if (chat.chatName === null) {
-      chat.chatName = "";
-      let first = true;
-      for (let usr of chat.usernames) {
-        if (usr != sessionStorage.getItem("USERNAME")) {
-          if (!first) {
-            chat.chatName += ", ";
-          }
-          first = false;
-          chat.chatName += usr;
-        }
-      }
+      this.chatService.prepareChatName(chat);
     }
   }
 
   prepareMessageTimes(): void {
     for (let chat of this.chatList) {
-      ChatlistComponent.prepareMessageTime(chat);
+      this.chatService.prepareMessageTime(chat);
     }
   }
 
-  static prepareMessageTime(chat: Chat) {
-    if (chat.lastMessage) {
-      if (!chat.lastMessage.createDateTime) {
-      }
-      chat.lastMessage.createDateTime = chat.lastMessage.createDateTime.slice(0, 10)
-        + " "
-        + chat.lastMessage.createDateTime.slice(11, 19)
-    }
-  }
 
 }

@@ -4,7 +4,6 @@ import {environment} from "../../../environments/environment";
 import {Chat} from '../model/chat';
 import {Observable, Subject} from 'rxjs';
 import {Message} from "../model/message";
-import {ChatlistComponent} from "../../component/chat-view/chatlist/chatlist.component";
 import {compareNumbers} from "@angular/compiler-cli/src/diagnostics/typescript_version";
 
 @Injectable({
@@ -32,7 +31,7 @@ export class ChatService {
       chatlist => {
         this.chatList = chatlist;
         chatListLoaded.next(true);
-      }, error => chatListLoaded.next(false)
+      }, () => chatListLoaded.next(false)
     );
     return chatListLoaded.asObservable();
   }
@@ -50,7 +49,7 @@ export class ChatService {
     if (message) {
       let chat: Chat = this.chatList.filter((chat) => chat.id == message.chatID)[0];
       chat.lastMessage = message;
-      ChatlistComponent.prepareMessageTime(chat);
+      this.prepareMessageTime(chat);
     }
     this.chatList.sort((chat1, chat2) => {
       if (!chat1.lastMessage) {
@@ -63,6 +62,33 @@ export class ChatService {
       let secondDate = Date.parse(chat2.lastMessage.createDateTime);
       return compareNumbers([secondDate], [firstDate]);
     })
+  }
+
+
+  prepareMessageTime(chat: Chat) {
+    if (chat.lastMessage) {
+      if (!chat.lastMessage.createDateTime) {
+      }
+      chat.lastMessage.createDateTime = chat.lastMessage.createDateTime.slice(0, 10)
+        + " "
+        + chat.lastMessage.createDateTime.slice(11, 19)
+    }
+  }
+
+  prepareChatName(chat: Chat) {
+    if (chat.chatName === null) {
+      chat.chatName = "";
+      let first = true;
+      for (let usr of chat.usernames) {
+        if (usr != sessionStorage.getItem("USERNAME")) {
+          if (!first) {
+            chat.chatName += ", ";
+          }
+          first = false;
+          chat.chatName += usr;
+        }
+      }
+    }
   }
 
 }
