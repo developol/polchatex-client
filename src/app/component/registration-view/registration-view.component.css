@@ -10,10 +10,11 @@ body {
 }
 
 h1 {
+  margin-top: -1em;
   text-align: center;
   padding-top: 1em;
   font-size: 6.5em;
-  margin-bottom: -2em;
+  margin-bottom: -3em;
   letter-spacing: 0.45em;
 }
 small {
@@ -83,6 +84,7 @@ small {
   margin-top: 2em;
   background-color: lightseagreen;
   border-color: white;
+  margin-bottom: -2.4em;
 }
 .btn:active {
   background-color: #20d2ca !important;

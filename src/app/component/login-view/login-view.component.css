@@ -17,6 +17,7 @@ h1 {
   padding-top: 1em;
   font-size: 6.5em;
   margin-bottom: -2em;
+  margin-top: -1em;
   letter-spacing: 0.45em;
 }
 
@@ -79,7 +80,7 @@ h1 {
   color: red !important;;
 }
 .btn {
-  margin-top: 4em;
+  margin-top: 2em;
   background-color: lightseagreen;
   border-color: white;
   margin-bottom: 1em;
