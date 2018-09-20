@@ -4,7 +4,6 @@ import {environment} from "../../../environments/environment";
 import {Chat} from '../model/chat';
 import {Observable, Subject} from 'rxjs';
 import {Message} from "../model/message";
-import {compareNumbers} from "@angular/compiler-cli/src/diagnostics/typescript_version";
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +59,13 @@ export class ChatService {
       }
       let firstDate = Date.parse(chat1.lastMessage.createDateTime);
       let secondDate = Date.parse(chat2.lastMessage.createDateTime);
-      return compareNumbers([secondDate], [firstDate]);
+      if (firstDate - secondDate > 0) {
+        return -1;
+      } else if (firstDate == secondDate) {
+        return 0;
+      } else if (secondDate - firstDate > 0) {
+        return 1;
+      }
     })
   }
 

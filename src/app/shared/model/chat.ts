@@ -4,7 +4,7 @@ export class Chat {
   id: number;
   chatName: string;
   usernames: string[];
-  lastMessage: Message
+  lastMessage: Message;
 
   constructor(id: number, chatName: string, usernames: string[], lastMessage: Message) {
     this.id = id;

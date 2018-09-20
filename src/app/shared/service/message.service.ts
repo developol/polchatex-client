@@ -15,7 +15,6 @@ export class MessageService {
     this.initializeSentMessageStreamFromWebSocketService();
     this.initializeMessageStream();
     this.initializeChatHistory();
-    setInterval(() => console.log(this.messages), 1000);
   }
 
   receivedMessageSubject: Subject<Message> = new Subject<Message>();
