@@ -1,6 +1,6 @@
 # Polchatex (client)
 
-Front end client for a simple websocket-based web chat, build using Angular 6.
+Front end client for a simple websocket-based web chat, build using Angular 6 and Bootstrap 4.
 
 ## Live on heroku!
 The whole application is fully functional and deployed on heroku, on 
