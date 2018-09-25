@@ -11,10 +11,10 @@ The whole application is fully functional and deployed on heroku, on
 
 ## Features
 
-* #### account registration/login
-* #### real time conversations with other usera
-* #### private and group chats!
-* #### message history stored in database, ready for viewing (size limited due to, again free hosting) 
+* account registration/login
+* real time conversations with other usera
+* private and group chats!
+* message history stored in database, ready for viewing (size limited due to, again free hosting) 
 ## Screenshots
 
 ![alt text](https://i.imgur.com/FM8TxLu.png "Login screen")
