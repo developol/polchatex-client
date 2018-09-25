@@ -21,3 +21,5 @@ The whole application is fully functional and deployed on Heroku, on
 
 ![alt text](https://i.imgur.com/FM8TxLu.png "Login screen")
 ![alt text](https://i.imgur.com/XbBfm7M.png "Main chat screen")
+
+Made by Paweł Kowański and Marek Baraniecki
