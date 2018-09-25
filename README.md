@@ -1,27 +1,21 @@
-# PolchatexClient
+# Polchatex (client)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.1.
+Front end client for a simple websocket-based web chat, build using Angular 6.
 
-## Development server
+## Live on heroku!
+The whole application is fully functional and deployed on heroku, on 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+**https://polchatex.herokuapp.com**
 
-## Code scaffolding
+(you might have to wait a while, as it's using free hosting and might be put to sleep)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Features
 
-## Build
+* #### account registration/login
+* #### real time conversations with other usera
+* #### private and group chats!
+* #### message history stored in database, ready for viewing (size limited due to, again free hosting) 
+## Screenshots
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+![alt text](https://i.imgur.com/FM8TxLu.png "Login screen")
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
